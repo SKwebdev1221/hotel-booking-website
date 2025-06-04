@@ -19,10 +19,10 @@
         </div>
         <div class="col-lg-4 p-4">
             <h5 class="mb-3">Follow us</h5>
-            <a href="#" class="d-inline-block mb-2 text-dark text-decoration-none mb-2"><i class="bi bi-twitter me-2"></i></i>Twitter</a><br>
-            <a href="#" class="d-inline-block mb-2 text-dark text-decoration-none mb-2"><i class="bi bi-instagram me-2"></i></i>Instagram</a><br>
-            <a href="#" class="d-inline-block mb-2 text-dark text-decoration-none mb-2"><i class="bi bi-facebook me-2"></i></i>Facebook</a><br>
-            <a href="#" class="d-inline-block mb-2 text-dark text-decoration-none"><i class="bi bi-pinterest me-2"></i></i>Pinterest</a>
+            <a href="#" class="d-inline-block mb-2 text-dark text-decoration-none mb-2"><i class="bi bi-twitter me-2"></i>Twitter</a><br>
+            <a href="#" class="d-inline-block mb-2 text-dark text-decoration-none mb-2"><i class="bi bi-instagram me-2"></i>Instagram</a><br>
+            <a href="#" class="d-inline-block mb-2 text-dark text-decoration-none mb-2"><i class="bi bi-facebook me-2"></i>Facebook</a><br>
+            <a href="#" class="d-inline-block mb-2 text-dark text-decoration-none"><i class="bi bi-pinterest me-2"></i>Pinterest</a>
         </div>
     </div>
 </div>
