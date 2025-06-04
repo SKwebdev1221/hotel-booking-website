@@ -41,3 +41,17 @@ margin: 0;
     top: 25px;
     right: 50px;
 }
+#dashboard-menu{
+    position:fixed;
+    height: 100%;
+}
+@media screen and (max-width: 991px){
+    #dashboard-menu{
+    position:fixed;
+    height: auto;
+    width: 100%;
+}
+    #main-content{
+        margin-top: 60px;
+    }
+}

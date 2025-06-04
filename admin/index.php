@@ -1,5 +1,15 @@
-<?php require('inc/db_config.php'); ?>
-<?php require('inc/essentials.php');?>
+<?php 
+    require('inc/essentials.php');
+    require('inc/db_config.php');
+
+    session_start();
+
+    if((isset($_SESSION['adminLogin']) && $_SESSION['adminLogin'] == true))
+    {
+        redirect('dashboard.php');
+    }
+ ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -53,7 +63,6 @@
             if($res->num_rows == 1)
             {
                 $row = mysqli_fetch_assoc($res);
-                session_start();
                 $_SESSION['adminLogin'] = true;
                 $_SESSION['adminId'] = $row['sr_no'];
                 redirect('dashboard.php');
