@@ -105,11 +105,11 @@
                                 <div class="mb-4">
                                     <h6 class="card-subtitle mb-1 fw-bold">Phone Numbers</h6>
                                     <p class="card-text mb-1">
-                                        <i class="bi bi-telephone-fill"></i>
+                                        <i class="bi bi-telephone-fill"></i>+
                                         <span id="pn1"></span>
                                     </p>
                                     <p class="card-text">
-                                        <i class="bi bi-telephone-fill"></i>
+                                        <i class="bi bi-telephone-fill"></i>+
                                         <span id="pn2"></span>
                                     </p>
                                 </div>
@@ -375,24 +375,6 @@
 
         contacts_s_form.addEventListener('submit', function(e) {
             e.preventDefault();
-
-            // List of required fields for contact form
-            let required_fields = [
-                { id: 'address_inp', label: 'Address' },
-                { id: 'gmap_inp', label: 'Google Map Link' },
-                { id: 'email_inp', label: 'Email' },
-                { id: 'iframe_inp', label: 'iFrame Src' }
-            ];
-
-            for (let i = 0; i < required_fields.length; i++) {
-                let field = document.getElementById(required_fields[i].id);
-                if (!field.value.trim()) {
-                    alert('error', `Please fill in the ${required_fields[i].label} field.`);
-                    field.focus();
-                    return;
-                }
-            }
-
             upd_contacts();
         });
 
