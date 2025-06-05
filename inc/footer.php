@@ -3,15 +3,17 @@
     $values = [1];
     $contact_r = mysqli_fetch_assoc(select($contact_q,$values,'i'));
 ?>
+<?php 
+    $company_q = "SELECT * FROM `settings` WHERE `sr_no`=?";
+    $values = [1];
+    $company_r = mysqli_fetch_assoc(select($company_q,$values,'i'));
+?>
 <div class="container-fluid bg-white mt-5">
     <div class="row">
         <div class="col-lg-4 p-4">
-            <h3 class="h-font fw-bold fs-3 mb-2">TJ HOTEL</h3>
+            <h3 class="h-font fw-bold fs-3 mb-2"><?php echo $company_r['site_title'] ?></h3>
             <p>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
-                Quos voluptatum deleniti aut distinctio pariatur cumque rerum quo doloremque modi alias obcaecati aliquam quaerat a, 
-                assumenda id quisquam at. 
-                Fuga, perferendis!
+                <?php echo $company_r['site_about'] ?>
             </p>
         </div>
         <div class="col-lg-4 p-4">
