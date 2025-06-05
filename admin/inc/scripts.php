@@ -12,4 +12,23 @@
         `;  
         document.body.append(element);
     }
+
+    function setActive() {
+        let navbar = document.getElementById('dashboard-menu');
+        if (!navbar) return;
+        let a_tags = navbar.getElementsByTagName('a');
+        // Get current file name (without query string or hash)
+        let current = window.location.pathname.split('/').pop().split('?')[0].split('#')[0];
+        if (current === "" || current === "/") current = "index.php"; // Default to index.php if root
+
+        for (let i = 0; i < a_tags.length; i++) {
+            let link = a_tags[i].getAttribute('href').split('/').pop().split('?')[0].split('#')[0];
+            if (link === current) {
+                a_tags[i].classList.add('active');
+            } else {
+                a_tags[i].classList.remove('active');
+            }
+        }
+    }
+    setActive();
 </script>

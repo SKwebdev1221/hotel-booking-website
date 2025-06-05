@@ -2,9 +2,12 @@
     // Frontend purpose data
     define('SITE_URL','http://127.0.0.1/hbwebsite/');
     define('ABOUT_IMG_PATH',SITE_URL.'images/about/');
+     define('CAROUSEL_IMG_PATH',SITE_URL.'images/carousel/');
 
     define('UPLOAD_IMAGE_PATH',$_SERVER['DOCUMENT_ROOT'].'/hbwebsite/images/');
     define('ABOUT_FOLDER','about/');
+
+    define('CAROUSEL_FOLDER','carousel/');
 
     function adminLogin()
     {
@@ -30,7 +33,7 @@
     }
 
     function alert($type,$msg)
-    {
+    { 
         $bs_class = ($type =="success") ? "alert-success" : "alert-danger";
         echo<<<alert
             <div class="alert $bs_class alert-dismissible fade show custom-alert" role="alert">
@@ -61,6 +64,18 @@
             $img_path = UPLOAD_IMAGE_PATH.$folder.$rname;
             move_uploaded_file($image['tmp_name'],$img_path);
             return $rname;
+        }
+    }
+
+    function deleteImage($image,$folder)
+    {
+        if(unlink(UPLOAD_IMAGE_PATH.$folder.$image))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 ?>
