@@ -258,7 +258,7 @@
                         <form id="team_s_form">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Add Team Membet</h5>                                
+                                    <h5 class="modal-title">Add Team Member</h5>                                
                                 </div>
                                 <div class="modal-body">
                                     <div class="mb-3">
@@ -279,7 +279,7 @@
                     </div>
                 </div>
 
-            </div>
+            </div>s
         </div>
     </div>
 

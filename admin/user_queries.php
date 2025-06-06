@@ -50,9 +50,8 @@
         {
             $q = "DELETE FROM `user_queries`";
                 if(mysqli_query($con,$q))
-
                 {
-                    alert('success','Data Deleted!');
+                    alert('success','All Data Deleted!');
                     header("Location: user_queries.php");
                     exit;
                 }

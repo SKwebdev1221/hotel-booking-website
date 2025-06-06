@@ -211,7 +211,7 @@ function add_member()
         var modal = bootstrap.Modal.getInstance(myModal);
         modal.hide();
 
-        if(this.reponseText == 'inv_img')
+        if(this.responseText == 'inv_img')
         {
             alert('error','Only JPG and PNG images are allowed!');
         }
