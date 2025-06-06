@@ -8,7 +8,7 @@
     define('UPLOAD_IMAGE_PATH',$_SERVER['DOCUMENT_ROOT'].'/hbwebsite/images/');
     define('ABOUT_FOLDER','about/');
     define('CAROUSEL_FOLDER','carousel/');
-    define('FEATURES_FOLDER',SITE_URL.'features/');
+    define('FEATURES_FOLDER', $_SERVER['DOCUMENT_ROOT'].'/hbwebsite/images/features/');
 
     function adminLogin()
     {
@@ -97,10 +97,11 @@
         {
             $ext = pathinfo($image['name'],PATHINFO_EXTENSION);
             $rname = 'IMG_'.random_int(11111,99999).".$ext";
-
-            $img_path = UPLOAD_IMAGE_PATH.$folder.$rname;
-            move_uploaded_file($image['tmp_name'],$img_path);
-            return $rname;
+            $img_path = $folder . $rname;
+            if(move_uploaded_file($image['tmp_name'], $img_path))
+            {
+                return $rname;
+            }
         }
     }
 ?>
