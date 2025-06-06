@@ -23,7 +23,8 @@
         $i = 1;
         while($row = mysqli_fetch_assoc($res))
         {
-            echo "<tr>
+            echo <<<data
+                <tr>
                     <td>$i</td>
                     <td>$row[name]</td>
                     <td>
@@ -31,7 +32,8 @@
                             <i class='bi bi-trash'></i> Delete
                         </button>
                     </td>
-                </tr>";
+                </tr>
+            data;
             $i++;
         }
     }
@@ -57,7 +59,7 @@
     {
         $frm_data = filteration($_POST);
 
-        $img_r = uploadSVGImage($_FILES['icon'],FEATURES_FOLDER);
+        $img_r = uploadSVGImage($_FILES['icon'],FACILITIES_FOLDER);
  
         if($img_r == 'inv_img')
         {
@@ -79,5 +81,46 @@
             echo $res;
         }
 
+    }
+
+    if(isset($_POST['get_facilities']))
+    {
+        $res = selectAll('facilities');
+        $i = 1;
+        $path = FACILITIES_IMG_PATH;
+        while($row = mysqli_fetch_assoc($res))
+        {
+            echo<<<data
+                <tr class="align-middle">
+                    <td>$i</td>
+                    <td><img src='$path$row[icon]' width='100px'></td>
+                    <td>$row[name]</td>
+                    <td>$row[description]</td>
+                    <td>
+                        <button type='button' onclick='rem_facility($row[id])' class='btn btn-danger btn-sm shadow-none'>
+                            <i class='bi bi-trash'></i> Delete
+                        </button>
+                    </td>
+                </tr>
+            data;
+            $i++;
+        }
+    }
+
+    if(isset($_POST['rem_facility']))
+    {
+        $frm_data = filteration($_POST);
+        $values = [$frm_data['rem_facility']];
+
+        $q = "DELETE FROM `facilities` WHERE `id`=?";
+        $res = delete($q,$values,'i');
+        if($res)
+        {
+            echo 1;
+        }
+        else
+        {
+            echo 0;
+        }
     }
 ?>

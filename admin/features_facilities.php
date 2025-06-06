@@ -108,10 +108,9 @@
                                 <i class="bi bi-plus-square me-1"></i>Add
                             </button>
                         </div>
-
                         <div class="table-responsive-md" style="height: 350px;overflow-y: scroll;">
                             <table class="table table-hover border">
-                                <thead class="sticky-top">
+                                <thead>
                                     <tr class="bg-dark text-light">
                                         <th scope="col">#</th>
                                         <th scope="col">Name</th>
@@ -123,7 +122,6 @@
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
 
@@ -135,22 +133,22 @@
                                 <i class="bi bi-plus-square me-1"></i>Add
                             </button>
                         </div>
-
                         <div class="table-responsive-md" style="height: 350px;overflow-y: scroll;">
                             <table class="table table-hover border">
-                                <thead class="sticky-top">
+                                <thead>
                                     <tr class="bg-dark text-light">
                                         <th scope="col">#</th>
+                                        <th scope="col">Icon</th>
                                         <th scope="col">Name</th>
+                                        <th scope="col" width="40%">Description</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody id="facility-data">
+                                <tbody id="facilities-data">
                                     
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
 
@@ -294,10 +292,6 @@
             xhr.send('rem_feature='+val);
         }
 
-        window.onload = function()
-        {
-            get_features();
-        }
 
         facility_s_form.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -337,12 +331,56 @@
                 {
                     alert('success','New facility added!');
                     facility_s_form.reset();
-                    get_members();
+                    get_facilities();
                 }
             }
 
             xhr.send(data);
 
+        }
+
+        function get_facilities()
+        {
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "ajax/features_facilities.php",true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+            xhr.onload = function()
+            {
+                document.getElementById('facilities-data').innerHTML = this.responseText;
+            }
+            xhr.send('get_facilities');
+        }
+
+        function rem_facility(val)
+        {
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "ajax/features_facilities.php",true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+            xhr.onload = function()
+            {
+                if(this.responseText == 1)
+                {
+                    alert('success','Facility removed successfully!');
+                    get_facilities();
+                }
+                else if(this.responseText == 'room_added')
+                {
+                    alert('error','This faciltiy is already added to some room!');
+                }
+                else
+                {
+                    alert('error','Server Down!');
+                }
+            }
+            xhr.send('rem_facility='+val);
+        }
+
+                window.onload = function()
+        {
+            get_features();
+            get_facilities();
         }
     </script>
   
