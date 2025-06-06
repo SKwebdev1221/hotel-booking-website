@@ -99,6 +99,7 @@
             <div class="col-lg-10 ms-auto p-4 overflow-hidden">
                 <h3 class="mb-4">FEATURES AND FACILITIES</h3>
 
+
                 <div class="card border-0 shadow-sm mb-4">
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between mb-3">
@@ -185,7 +186,7 @@
 
     <div class="modal fade" id="facility-s" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <form id="facility_s_form" enctype="multipart/form-data">
+            <form id="facility_s_form">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Add Facility</h5>                                
