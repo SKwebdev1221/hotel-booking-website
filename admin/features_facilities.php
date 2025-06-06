@@ -99,7 +99,6 @@
             <div class="col-lg-10 ms-auto p-4 overflow-hidden">
                 <h3 class="mb-4">FEATURES AND FACILITIES</h3>
 
-
                 <div class="card border-0 shadow-sm mb-4">
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between mb-3">
@@ -186,7 +185,7 @@
 
     <div class="modal fade" id="facility-s" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <form id="facility_s_form">
+            <form id="facility_s_form" enctype="multipart/form-data">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Add Facility</h5>                                
@@ -194,7 +193,15 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label class="form-label fw-bold">Name</label>
-                            <input type="text" name="feature_name" id="feature_name_inp" class="form-control shadow-none" required>
+                            <input type="text" name="facility_name" class="form-control shadow-none" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold p-0">Icon</label>
+                            <input type="file" name="facility_icon" accept=".svg" class="form-control shadow-none" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label p-0">Description</label>
+                            <textarea class="form-control" name="facility_desc" id="exampleFormControlTextarea1" rows="3"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -209,6 +216,8 @@
     <?php require('inc/scripts.php'); ?>
     <script>
         let feature_s_form = document.getElementById('feature_s_form');
+        let facility_s_form = document.getElementById('facility_s_form');
+
 
         feature_s_form.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -287,6 +296,52 @@
         window.onload = function()
         {
             get_features();
+        }
+
+        facility_s_form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            add_facility();
+        });
+
+        function add_facility()
+        {
+            let data = new FormData();
+            data.append('name',facility_s_form.elements['facility_name'].value);
+            data.append('icon',facility_s_form.elements['facility_icon'].files[0]);
+            data.append('desc',facility_s_form.elements['facility_desc'].value);
+            data.append('add_facility','');
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "ajax/features_facilities.php",true);
+
+            xhr.onload = function()
+            {   
+                var myModal = document.getElementById('facility-s');
+                var modal = bootstrap.Modal.getInstance(myModal);
+                modal.hide();
+
+                if(this.responseText == 'inv_img')
+                {
+                    alert('error','Only SVG images are allowed!');
+                }
+                else if(this.responseText == 'inv_size')
+                {
+                    alert('error','Image size should be less than 1 MB!');
+                }
+                else if(this.responseText == 'upd_failed')
+                {
+                    alert('error','Failed to upload image!');
+                }
+                else
+                {
+                    alert('success','New facility added!');
+                    facility_s_form.reset();
+                    get_members();
+                }
+            }
+
+            xhr.send(data);
+
         }
     </script>
   
