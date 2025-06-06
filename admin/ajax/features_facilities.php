@@ -112,8 +112,22 @@
         $frm_data = filteration($_POST);
         $values = [$frm_data['rem_facility']];
 
+        // Fetch the icon filename
+        $pre_q = "SELECT `icon` FROM `facilities` WHERE `id`=?";
+        $res = select($pre_q, $values, 'i');
+        $img = mysqli_fetch_assoc($res);
+
+        // Delete the icon file from the server
+        if($img && !empty($img['icon'])) {
+            $icon_path = FACILITIES_FOLDER . $img['icon'];
+            if(file_exists($icon_path)){
+                unlink($icon_path);
+            }
+        }
+
+        // Delete the row from the database
         $q = "DELETE FROM `facilities` WHERE `id`=?";
-        $res = delete($q,$values,'i');
+        $res = delete($q, $values, 'i');
         if($res)
         {
             echo 1;
