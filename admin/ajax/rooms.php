@@ -182,9 +182,62 @@
         {
             $flag = 1;
         }
-            
-    }
 
+        $del_features = delete("DELETE FROM `room_features` WHERE `room_id`=?",[$frm_data['room_id']],'i');
+        $del_facilities = delete("DELETE FROM `room_facilities` WHERE `room_id`=?",[$frm_data['room_id']],'i');
+
+        if(!($del_facilities && $del_features))
+        {
+            $flag = 0;        
+        }
+
+        $q2 = "INSERT INTO `room_facilities`(`room_id`, `facilities_id`) VALUES (?,?)";
+
+        if($stmt = mysqli_prepare($con,$q2))
+        {
+            foreach($facilities as $f)
+            {
+                mysqli_stmt_bind_param($stmt,'ii',$frm_data['room_id'],$f);
+                mysqli_stmt_execute($stmt);
+            }
+            $flag = 1;
+            mysqli_stmt_close($stmt);
+        }
+        else
+        {
+            $flag = 0;
+            die('Query cannot be prepared - Insert');
+        }
+
+        $q3 = "INSERT INTO `room_features`(`room_id`, `features_id`) VALUES (?,?)";
+
+        if($stmt = mysqli_prepare($con,$q3))
+        {
+            foreach($features as $f)
+            {
+                mysqli_stmt_bind_param($stmt,'ii',$frm_data['room_id'],$f);
+                mysqli_stmt_execute($stmt);
+            }
+            $flag=1;
+            mysqli_stmt_close($stmt);
+        }
+        else
+        {
+            $flag = 0;
+            die('Query cannot be prepared - Insert');
+        }
+
+        if($flag == 1)
+        {
+            echo 1;
+        }
+        else
+        {
+            echo 0;
+        }
+
+
+    }
 
     if(isset($_POST['toggle_status']))
     {
