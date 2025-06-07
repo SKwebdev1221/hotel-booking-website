@@ -98,7 +98,7 @@
                                         while($opt = mysqli_fetch_assoc($res))
                                         {
                                             echo"
-                                                <div class='col-md-3'>
+                                                <div class='col-md-3 mb-1'>
                                                     <label>
                                                         <input type='checkbox' name='features' value='{$opt['id']}' class='form-check-input shadow-none'>
                                                         $opt[name]
@@ -108,6 +108,29 @@
                                         }
                                     ?>
                                 </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label fw-bold">Features</label>
+                                <div class="row">
+                                    <?php  
+                                        $res = selectAll('facilities');
+                                        while($opt = mysqli_fetch_assoc($res))
+                                        {
+                                            echo"
+                                                <div class='col-md-3 mb-1'>
+                                                    <label>
+                                                        <input type='checkbox' name='facilities' value='{$opt['id']}' class='form-check-input shadow-none'>
+                                                        $opt[name]
+                                                    </label>
+                                                </div>
+                                            ";
+                                        }
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label fw-bold">Description</label>
+                                <textarea name="desc" rows="4" class="form-control shadow-none" required></textarea>
                             </div>
                         </div>
                     </div>
@@ -120,40 +143,74 @@
         </div>
     </div>
 
-    <!-- Facility Modal -->
-
-    <div class="modal fade" id="facility-s" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <form id="facility_s_form">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Add Facility</h5>                                
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Name</label>
-                            <input type="text" name="facility_name" class="form-control shadow-none" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-bold p-0">Icon</label>
-                            <input type="file" name="facility_icon" accept=".svg" class="form-control shadow-none" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label p-0">Description</label>
-                            <textarea class="form-control" name="facility_desc" id="exampleFormControlTextarea1" rows="3"></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="reset" class="btn text-secondary shadow-none" data-bs-dismiss="modal">CANCEL</button>
-                        <button type="submit" class="btn custom-bg text-white shadow-none">SUBMIT</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <?php require('inc/scripts.php'); ?>
-    <script src="scripts/features_facilities.js"></script>
+    <script>
+
+        let add_room_form = document.getElementById('add_room_form');
+
+        add_room_form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            add_rooms();    
+        });
+
+        function add_rooms()
+        {
+            let data = new FormData();
+            data.append('add_room','');
+            data.append('name',add_room_form.elements['name'].value);
+            data.append('area',add_room_form.elements['area'].value);
+            data.append('price',add_room_form.elements['price'].value);
+            data.append('quantity',add_room_form.elements['quantity'].value);
+            data.append('adult',add_room_form.elements['adult'].value);
+            data.append('children',add_room_form.elements['children'].value);
+            data.append('desc',add_room_form.elements['desc'].value);
+
+            let features = [];
+
+            add_room_form.elements['features'].forEach(el =>{
+                if(el.checked)
+                {
+                    features.push(el.value);
+                }
+            })
+
+            let facilities = [];
+
+            add_room_form.elements['facilities'].forEach(el =>{
+                if(el.checked)
+                {
+                    facilities.push(el.value);
+                }
+            })
+
+            data.append('features',JSON.stringify(features));
+            data.append('facilities',JSON.stringify(facilities));
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "ajax/rooms.php",true);
+
+            xhr.onload = function()
+            {   
+                var myModal = document.getElementById('add-room');
+                var modal = bootstrap.Modal.getInstance(myModal);
+                modal.hide();
+
+                if(this.responseText == 1 )
+                {
+                    alert('success','New room added!');
+                    add_room_form.reset();
+                    
+                }
+                else
+                {
+                    alert('error','Server Down!');
+                }
+            }
+
+            xhr.send(data);
+        }
+    </script>
   
 </body>
 </html>
