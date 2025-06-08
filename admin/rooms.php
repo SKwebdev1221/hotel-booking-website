@@ -241,6 +241,9 @@
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <div id="image-alert">
+
+                </div>
                 <div class="border-bottom border-3 pb-3 mb-3">
                     <form id="add_image_form">
                         <label class="form-label fw-bold p-0">Add Image</label>
@@ -505,7 +508,7 @@
                 }
                 else
                 {
-                    alert('success','New Image added!');
+                    alert('success','New Image added!','image-alert');
                     add_image_form.reset();
                 }
             }
