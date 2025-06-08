@@ -33,32 +33,32 @@
         return $res;
     }
 
-function select($sql,$values,$datatypes)
-{
-    $con = $GLOBALS['con'];
-    if($stmt = mysqli_prepare($con,$sql))
+    function select($sql,$values,$datatypes)
     {
-        if(!empty($datatypes) && !empty($values))
+        $con = $GLOBALS['con'];
+        if($stmt = mysqli_prepare($con,$sql))
         {
-            mysqli_stmt_bind_param($stmt,$datatypes,...$values);
-        }
-        if(mysqli_stmt_execute($stmt))
-        {
-            $res = mysqli_stmt_get_result($stmt);
-            mysqli_stmt_close($stmt);
-            return $res;    
+            if(!empty($datatypes) && !empty($values))
+            {
+                mysqli_stmt_bind_param($stmt,$datatypes,...$values);
+            }
+            if(mysqli_stmt_execute($stmt))
+            {
+                $res = mysqli_stmt_get_result($stmt);
+                mysqli_stmt_close($stmt);
+                return $res;    
+            }
+            else
+            {
+                mysqli_stmt_close($stmt);
+                die("Query cannot be prepared - Select");
+            }
         }
         else
         {
-            mysqli_stmt_close($stmt);
-            die("Query cannot be prepared - Select");
+            die("Query cannot be executed - Select");
         }
     }
-    else
-    {
-        die("Query cannot be executed - Select");
-    }
-}
 
     function update($sql,$values,$datatypes)
     {

@@ -385,15 +385,15 @@ if(isset($_POST['remove_room']))
     // Debugging logs
     error_log("Remove Room Debug: res2=$res2, res3=$res3, res4=$res4, res5=$res5");
 
-if($res5)
-{
-    echo 1;
-}
-else
-{
-    echo "0|Debug Info: res2=$res2, res3=$res3, res4=$res4, res5=$res5";
-}
+    if($res5)
+    {
+        echo 1;
+    }
+    else
+    {
+        echo "0|Debug Info: res2=$res2, res3=$res3, res4=$res4, res5=$res5";
+    }
 
-}
+    }
     
 ?>
