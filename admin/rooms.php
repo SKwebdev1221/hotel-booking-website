@@ -241,9 +241,7 @@
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div id="image-alert">
-
-                </div>
+                <div id="image-alert"></div>
                 <div class="border-bottom border-3 pb-3 mb-3">
                     <form id="add_image_form">
                         <label class="form-label fw-bold p-0">Add Image</label>
@@ -280,7 +278,7 @@
             e.preventDefault();
             add_room();    
         });
-
+        
         function add_room()
         {
             let data = new FormData();
@@ -494,21 +492,22 @@
 
             xhr.onload = function()
             {   
-                if(this.reponseText == 'inv_img')
+                if(this.responseText == 'inv_img')
                 {
-                    alert('error','Only JPG,WEBP and PNG images are allowed!');
+                    alert('error','Only JPG,WEBP and PNG images are allowed!','image-alert');
                 }
                 else if(this.responseText == 'inv_size')
                 {
-                    alert('error','Image size should be less than 2 MB!');
+                    alert('error','Image size should be less than 2 MB!','image-alert');
                 }
                 else if(this.responseText == 'upd_failed')
                 {
-                    alert('error','Failed to upload image!');
+                    alert('error','Failed to upload image!','image-alert');
                 }
                 else
                 {
-                    alert('success','New Image added!','image-alert');
+                    alert('success','New Image added!','image-alert');   
+                    room_images(add_image_form.elements['room_id'].value,document.querySelector("#room-images .modal-title").innerText)
                     add_image_form.reset();
                 }
             }
@@ -519,6 +518,96 @@
         {
             document.querySelector("#room-images .modal-title").innerText = rname;
             add_image_form.elements['room_id'].value = id;
+            add_image_form.elements['image'].value = '';
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "ajax/rooms.php", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+            xhr.onload = function() 
+            {
+                document.getElementById('room-image-data').innerHTML = this.responseText;    
+            }
+            xhr.send('get_room_images='+id);
+
+        }
+
+        function rem_image(img_id,room_id)
+        {
+            let data = new FormData();
+            data.append('image_id',img_id);
+            data.append('room_id',room_id);
+            data.append('rem_image','');
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "ajax/rooms.php",true);
+
+            xhr.onload = function()
+            {   
+                if(this.responseText == 1)
+                {
+                    alert('success','Image Removed!','image-alert'); 
+                    room_images(room_id,document.querySelector("#room-images .modal-title").innerText);
+                }
+                else
+                {
+                    alert('error','Image removal Failed!','image-alert');   
+                }
+            }
+            xhr.send(data);
+        }
+
+        function thumb_image(img_id,room_id)
+        {
+            let data = new FormData();
+            data.append('image_id',img_id);
+            data.append('room_id',room_id);
+            data.append('thumb_image','');
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "ajax/rooms.php",true);
+            
+            xhr.onload = function()
+            {   
+                if(this.responseText == 1)
+                {
+                    alert('success','Image Thumbnail change!','image-alert'); 
+                    room_images(room_id,document.querySelector("#room-images .modal-title").innerText);
+                }
+                else
+                {
+                    alert('error','Thumbnail update Failed!','image-alert');   
+                }
+            }
+            xhr.send(data);
+        }
+
+        function remove_room(room_id)
+        {
+            if(confirm("Are you sure you want to delete this room?"))
+            {
+                let data = new FormData();
+                data.append('room_id',room_id);
+                data.append('remove_room','');
+                
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", "ajax/rooms.php",true);
+                
+                xhr.onload = function()
+                {   
+                    if(this.responseText == 1)
+                    {
+                        alert('success','Room removed!'); 
+                        get_all_rooms();
+                    }
+                    else
+                    {
+                        alert('error','Room removal failed');   
+                    }
+                }
+                xhr.send(data);
+
+            }
 
         }
 

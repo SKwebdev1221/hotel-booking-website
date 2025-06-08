@@ -20,14 +20,18 @@
         {
             document.getElementById(position).appendChild(element);
         }
-        document.body.append(element);
-        setTimeout(remAlert, 1000);
+        // Removed duplicate append to body here
+        setTimeout(remAlert, 2000);
     }
 
-    function remAlert()
+function remAlert()
+{
+    const alertElement = document.getElementsByClassName('alert')[0];
+    if(alertElement)
     {
-        document.getElementsByClassName('alert')[0].remove();
+        alertElement.remove();
     }
+}
 
     function setActive() {
         let navbar = document.getElementById('dashboard-menu');

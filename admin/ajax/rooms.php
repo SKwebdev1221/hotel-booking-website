@@ -72,7 +72,7 @@
 
     if(isset($_POST['get_all_rooms']))
     {
-        $res = selectAll('rooms');
+        $res = select("SELECT * FROM `rooms` WHERE `removed`=0",[],'');
         $i = 1;
         $data = "";
 
@@ -117,6 +117,9 @@
                         </button>
                         <button type='button' onclick=\"room_images($row[id],'$row[name]')\" class='btn btn-info shadow-none btn-sm' data-bs-toggle='modal' data-bs-target='#room-images'>
                             <i class='bi bi-images me-1'></i>
+                        </button>
+                        <button type='button' onclick='remove_room($row[id])' class='btn btn-danger shadow-none btn-sm'>
+                            <i class='bi bi-trash me-1'></i>
                         </button>
                     </td>
                 <tr>
@@ -286,4 +289,111 @@
         }
 
     }
+
+    if(isset($_POST['get_room_images']))
+    {
+        $frm_data = filteration($_POST);
+        $res = select("SELECT * FROM `room_image` WHERE `room_id`=?",[$frm_data['get_room_images']],'i');
+
+        $path = ROOMS_IMG_PATH;
+
+        while($row = mysqli_fetch_assoc($res))
+        {
+            $thumb_btn = '';
+            if($row['thumb'] == 1)
+            {
+                $thumb_btn = '<i class="bi bi-check-lg text-light bg-success px-2 py-1 rounded fs-5"></i>';
+            }
+            else
+            {
+                $thumb_btn = "<button type='button' onclick='thumb_image($row[sr_no],$row[room_id])' class='btn btn-secondary shadow-none btn-sm'>
+                                <i class='bi bi-check-lg'></i>
+                              </button>";
+            }
+            echo <<<data
+                <tr class='align-middle'>
+                    <td><img src='$path$row[image]' class="img-fluid"></td>
+                    <td>$thumb_btn</td>
+                    <td>
+                        <button type='button' onclick='rem_image($row[sr_no],$row[room_id])' class='btn btn-danger shadow-none btn-sm'>
+                            <i class='bi bi-trash'></i>
+                        </button>
+                    </td>
+                </tr>
+
+            data;
+        }
+
+    }
+
+    if(isset($_POST['rem_image']))
+    {
+        $frm_data = filteration($_POST);
+        $values = [$frm_data['image_id'],$frm_data['room_id']];
+
+        $pre_q = "SELECT * FROM `room_image` WHERE `sr_no`=? AND `room_id`=?";
+        $res = select($pre_q,$values,'ii');
+        $img = mysqli_fetch_assoc($res);
+
+        if(deleteImage($img['image'],ROOMS_FOLDER))
+        {
+            $q = "DELETE FROM `room_image` WHERE `sr_no`=? AND `room_id`=?";
+            $res = delete($q,$values,'ii');
+            echo $res;
+        }
+        else
+        {
+            echo 0;
+        }
+
+
+    }
+
+    if(isset($_POST['thumb_image']))
+    {
+        $frm_data = filteration($_POST);
+
+        // Reset all thumbnails for the room to 0
+        $pre_q = "UPDATE `room_image` SET `thumb`=0 WHERE `room_id`=?";
+        $pre_v = [$frm_data['room_id']];
+        $pre_res = update($pre_q,$pre_v,'i');
+
+        // Set the selected image as thumbnail
+        $q = "UPDATE `room_image` SET `thumb`=1 WHERE `sr_no`=? AND `room_id`=?";
+        $values = [$frm_data['image_id'],$frm_data['room_id']];
+        $res = update($q,$values,"ii");
+
+        echo $res;
+    }
+
+if(isset($_POST['remove_room']))
+{
+    $frm_data = filteration($_POST);
+
+    $res1 = select("SELECT * FROM `room_image` WHERE `room_id`=?",[$frm_data['room_id']],"i");
+
+    while($row = mysqli_fetch_assoc($res1))
+    {
+        deleteImage($row['image'],ROOMS_FOLDER);
+    }
+
+    $res2 = delete("DELETE FROM `room_image` WHERE `room_id`=?",[$frm_data['room_id']],"i");
+    $res3 = delete("DELETE FROM `room_features` WHERE `room_id`=?",[$frm_data['room_id']],"i");
+    $res4 = delete("DELETE FROM `room_facilities` WHERE `room_id`=?",[$frm_data['room_id']],"i");
+    $res5 = update("UPDATE `rooms` SET `removed`=? WHERE `id`=?",[1,$frm_data['room_id']],"ii");
+
+    // Debugging logs
+    error_log("Remove Room Debug: res2=$res2, res3=$res3, res4=$res4, res5=$res5");
+
+if($res5)
+{
+    echo 1;
+}
+else
+{
+    echo "0|Debug Info: res2=$res2, res3=$res3, res4=$res4, res5=$res5";
+}
+
+}
+    
 ?>

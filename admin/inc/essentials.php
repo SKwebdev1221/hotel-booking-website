@@ -73,12 +73,22 @@
     
     function deleteImage($image,$folder)
     {
-        if(unlink(UPLOAD_IMAGE_PATH.$folder.$image))
+        $file_path = UPLOAD_IMAGE_PATH.$folder.$image;
+        if(file_exists($file_path))
         {
-            return true;
+            if(unlink($file_path))
+            {
+                return true;
+            }
+            else
+            {
+                error_log("Failed to delete file: $file_path");
+                return false;
+            }
         }
         else
         {
+            error_log("File does not exist: $file_path");
             return false;
         }
     }
