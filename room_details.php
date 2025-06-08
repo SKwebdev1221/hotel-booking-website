@@ -179,7 +179,7 @@
 
             <!-- Rooms Card -->
             <div class="col-12 mt-4 px-4">
-                <div class="mb-4">
+                <div class="mb-5">
                     <h5>Description</h5>
                     <p>
                     <?php
@@ -188,12 +188,25 @@
                     </p>
                 </div>
                     <h5 class="mb-3">Reviews and Rating</h5>
-                    date_interval_create_from_date_string
+                    <div>
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="images/features/star.jpg" width="30px">
+                            <h6 class="m-0 ms-2">Randomn User 1</h6>
+                        </div>
+                        <p>
+                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repudiandae provident et fugit cupiditate eligendi aperiam expedita ducimus deleniti exercitationem culpa!
+                        </p>
+                        <div class="rating">
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                        </div>
+                    </div>    
                 </div>
             </div>
         </div>
     </div>
-
 
 <!-- Footer -->
     <?php require('inc/footer.php') ?>
